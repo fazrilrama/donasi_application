@@ -1,90 +1,82 @@
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:donasi_mobile/views/campaign.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/campaign_controller.dart';
+import 'package:get_storage/get_storage.dart';
 
-class HomeView extends StatelessWidget {
-  final CampaignController homeController = Get.put(CampaignController());
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
+
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  int _selectedIndex = 0; // Index aktif di BottomNavigationBar
+
+  final List<Widget> _pages = [
+    CampaignPage(),
+    Text('hehe'),
+    Text('hehe'),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red, // Latar belakang merah putih
+      backgroundColor: Colors.red,
       appBar: AppBar(
-        title: Text("Campaign Donasi"),
-        backgroundColor: Colors.white, // AppBar putih
-        foregroundColor: Colors.red, // Warna teks merah
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.red, Colors.white], // Gradasi merah-putih
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Obx(() {
-          if (homeController.isLoading.value) {
-            return Center(child: CircularProgressIndicator());
-          }
-
-          return ListView.builder(
-            padding: EdgeInsets.all(16),
-            itemCount: homeController.campaigns.length,
-            itemBuilder: (context, index) {
-              final campaign = homeController.campaigns[index];
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 5,
-                margin: EdgeInsets.only(bottom: 16),
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        campaign['title'],
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        campaign['description'],
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-                      ),
-                      SizedBox(height: 12),
-                      LinearProgressIndicator(
-                        value: campaign['progress'],
-                        backgroundColor: Colors.grey[300],
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        "Terkumpul: Rp${campaign['collected']} / Rp${campaign['goal']}",
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 12),
-                      ElevatedButton(
-                        onPressed: () {
-                          Get.toNamed("/campaign/${campaign['id']}");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Text("Donasi Sekarang", style: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  ),
-                ),
+        title: Text("Donasi Yuk"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.red,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app, color: Colors.red), // Ganti ikon logout
+            onPressed: () {
+              Get.defaultDialog(
+                title: "Konfirmasi",
+                middleText: "Apakah Anda yakin ingin logout?",
+                textConfirm: "Ya",
+                textCancel: "Batal",
+                confirmTextColor: Colors.white,
+                buttonColor: Colors.red,
+                onConfirm: () {
+                  final box = GetStorage();
+                  box.erase(); // Hapus data login
+                  Get.offAllNamed('/login'); // Redirect ke halaman login
+                },
               );
             },
-          );
-        }),
+          ),
+        ],
+      ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: Colors.red,
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: "Donasi",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profil",
+          ),
+        ],
       ),
     );
   }

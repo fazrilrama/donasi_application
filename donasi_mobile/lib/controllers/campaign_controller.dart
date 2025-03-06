@@ -1,3 +1,4 @@
+import 'package:donasi_mobile/models/campaign_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -6,12 +7,12 @@ import 'package:get_storage/get_storage.dart';
 
 class CampaignController extends GetxController {
   var isLoading = true.obs;
-  var campaigns = [].obs;
+  var Campaigns = <Campaign>[].obs;
 
   @override
   void onInit() {
-    fetchCampaigns();
     super.onInit();
+    fetchCampaigns();
   }
 
   Future<void> fetchCampaigns() async {
@@ -30,12 +31,14 @@ class CampaignController extends GetxController {
       final response = await http.get(uri, headers: headers);
 
       if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        campaigns.value = data["data"];
+        final jsonData = json.decode(response.body);
+        List<dynamic> data = jsonData["data"];
+        Campaigns.assignAll(data.map((e) => Campaign.fromJson(e)).toList());
       } else {
         Get.snackbar("Error", "Gagal mengambil data campaign");
       }
     } catch (e) {
+      print(e);
       Get.snackbar("Error", "Terjadi kesalahan: $e");
     } finally {
       isLoading(false);

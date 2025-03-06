@@ -92,11 +92,19 @@ module.exports = {
                 return acc;
             }, {});
 
-            const campaignsWithTransactions = campaigns.map(campaign => ({
-                ...campaign,
-                length_transaction: transactionMap[campaign.id]?.length || 0,
-                transactions: transactionMap[campaign.id] || []
-            }));
+            const campaignsWithTransactions = campaigns.map(campaign => {
+                // Hitung persentase dari target dan collected amount
+                const percentage = campaign.target_amount > 0 
+                    ? (campaign.collected_amount / campaign.target_amount) * 100 
+                    : 0;
+                    
+                return {
+                    ...campaign,
+                    percentage: parseInt(percentage),
+                    length_transaction: transactionMap[campaign.id]?.length || 0,
+                    transactions: transactionMap[campaign.id] || []
+                };
+            });
 
             return res.status(200).json({
                 status: true,
