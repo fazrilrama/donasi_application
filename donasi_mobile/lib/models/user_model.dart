@@ -2,6 +2,7 @@ class User {
   final String id;
   final String name;
   final String email;
+  final String? role;
   final String? phone; // Optional jika ada
   final double? latitude; // Optional jika ada
   final double? longitude; // Optional jika ada
@@ -11,6 +12,7 @@ class User {
     required this.id,
     required this.name,
     required this.email,
+    this.role,
     this.phone,
     this.latitude,
     this.longitude,
@@ -23,6 +25,7 @@ class User {
       id: json['id'],
       name: json['name'],
       email: json['email'],
+      role: json['role'],
       phone: json['phone'],
       latitude: json['latitude'] != null ? double.parse(json['latitude'].toString()) : null,
       longitude: json['longitude'] != null ? double.parse(json['longitude'].toString()) : null,
@@ -36,6 +39,7 @@ class User {
       "id": id,
       "name": name,
       "email": email,
+      "role": role,
       "phone": phone,
       "latitude": latitude,
       "longitude": longitude,

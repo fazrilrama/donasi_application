@@ -15,6 +15,37 @@ class CampaignController extends GetxController {
     fetchCampaigns();
   }
 
+  Future<void> createCampaign(String title, String description, double targetAmount, String deadline) async {
+    try {
+      isLoading(true);
+      final uri = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.campaign}');
+
+      final response = await http.post(
+        Uri.parse("$uri"),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({
+          "title": title,
+          "description": description,
+          "target_amount": targetAmount,
+          "collected_amount": 0, // Default ke 0
+          "deadline": deadline,
+          "status": "open", // Default "open"
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        Get.snackbar("Success", "Campaign berhasil dibuat!");
+        Get.back(); // Kembali ke halaman sebelumnya
+      } else {
+        Get.snackbar("Error", "Gagal membuat campaign");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Terjadi kesalahan: $e");
+    } finally {
+      isLoading(false);
+    }
+  }
+
   Future<void> fetchCampaigns() async {
     final box = GetStorage();
 

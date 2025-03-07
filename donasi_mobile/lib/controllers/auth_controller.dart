@@ -33,12 +33,14 @@ class AuthController extends GetxController {
         box.write("isLoggedIn", true);
         box.write("token", data['token']);
         box.write("name", data['user']['name']);
+        box.write("role", data['user']['role']);
 
         // 🔥 Simpan ke state user
         user.value = User(
           id: data['user']['id'],
           name: data['user']['name'],
           email: data['user']['email'],
+          role: data['user']['role'],
         );
 
         Get.offAllNamed(AppRoutes.HOME);

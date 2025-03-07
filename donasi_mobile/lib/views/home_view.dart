@@ -22,6 +22,15 @@ class _HomeViewState extends State<HomeView> {
     Text('hehe'),
   ];
 
+  final GetStorage box = GetStorage();
+  String? userRole;
+
+  @override
+  void initState() {
+    super.initState();
+    userRole = box.read('role') ?? '';
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -49,8 +58,8 @@ class _HomeViewState extends State<HomeView> {
                 buttonColor: Colors.red,
                 onConfirm: () {
                   final box = GetStorage();
-                  box.erase(); // Hapus data login
-                  Get.offAllNamed('/login'); // Redirect ke halaman login
+                  box.erase();
+                  Get.offAllNamed('/login');
                 },
               );
             },
@@ -68,10 +77,11 @@ class _HomeViewState extends State<HomeView> {
             icon: Icon(Icons.home),
             label: "Home",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Donasi",
-          ),
+          if (userRole == 'donatur')
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: "Donasi",
+            ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: "Profil",

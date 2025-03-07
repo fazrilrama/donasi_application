@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'routes/app_pages.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void checkLoginStatus() {
   final box = GetStorage();
@@ -45,6 +46,9 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(body: Center(child: CircularProgressIndicator())), // Loading sementara
+      theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(), // Semua teks otomatis pakai Poppins
+      ),
       getPages: AppPages.routes,
     );
   }

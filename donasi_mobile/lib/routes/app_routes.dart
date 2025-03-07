@@ -1,4 +1,5 @@
 import 'package:donasi_mobile/routes/app_pages.dart';
+import 'package:donasi_mobile/views/campaign/create.dart';
 import 'package:get/get.dart';
 import '../views/login_view.dart';
 import '../views/home_view.dart';
@@ -19,6 +20,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.HOME,
       page: () => HomeView(),
+    ),
+    GetPage(
+      name: AppRoutes.CREATE_CAMPAIGN, 
+      page: () => CreateCampaignView()
     ),
     // GetPage(
     //   name: AppRoutes.CAMPAIGN_DETAIL,
