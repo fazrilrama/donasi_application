@@ -83,17 +83,18 @@ class _CampaignPageState extends State<CampaignPage> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "Terkumpul: Rp ${data[index].target_amount} / Rp ${data[index].collected_amount}",
+                          "Terkumpul: Rp ${data[index].collected_amount} / Rp ${data[index].target_amount}",
                           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 12),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             // Navigasi ke halaman donasi
                             if(userRole == 'donatur') {
                               Get.snackbar("Donatur Page", "Halaman Donatur");
                             } else {
-                              Get.snackbar("Admin Page", "Halaman Admin");
+                              await Get.toNamed(AppRoutes.DETAIL_CAMPAIGN, parameters: {"id": data[index].id});
+                              _refresh();
                             }
                           },
                           style: ElevatedButton.styleFrom(

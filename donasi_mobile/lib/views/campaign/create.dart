@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, depend_on_referenced_packages, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +16,7 @@ class CreateCampaignView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Buat Campaign", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("Buat Campaign", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: Colors.red.shade700,
         elevation: 0,
       ),
